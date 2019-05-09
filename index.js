@@ -8,12 +8,37 @@ const db = require("./data/db.js");
 const server = express();
 server.use(express.json());
 
+server.get("/", (req, res) => {
+  res.send("Welcome to WebAPI Challenge I!!");
+});
+
 server.post("/api/users", (req, res) => {
-  // stuff here
+  const { name, bio, created_at, updated_at } = req.body;
+
+  db.insert({
+    name,
+    bio,
+    created_at,
+    updated_at
+  })
+    .then(response => {
+      res.status(201).json(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 server.get("/api/users", (req, res) => {
-  // stuff here
+  db.find()
+    .then(allUsers => {
+      res.json(allUsers);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 server.get("/api/users/:id", (req, res) => {
@@ -30,4 +55,4 @@ server.put("/api/users/:id", (req, res) => {
 
 // once the server is fully configured we can have it "listen" for connections on a particular "port"
 // the callback function passed as the second argument will run once when the server starts
-server.listen(8000, () => console.log("API running on port 8000"));
+server.listen(7000, () => console.log("API running on port 7000"));
