@@ -42,7 +42,16 @@ server.get("/api/users", (req, res) => {
 });
 
 server.get("/api/users/:id", (req, res) => {
-  // stuff here
+  const { id } = req.params;
+
+  db.findById(id)
+    .then(thisUser => {
+      res.json(thisUser);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 server.delete("/api/users/:id", (req, res) => {
