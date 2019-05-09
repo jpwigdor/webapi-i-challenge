@@ -46,7 +46,16 @@ server.get("/api/users/:id", (req, res) => {
 });
 
 server.delete("/api/users/:id", (req, res) => {
-  // stuff here
+  const { id } = req.params;
+
+  db.remove(id)
+    .then(removedUser => {
+      res.json(removedUser);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 server.put("/api/users/:id", (req, res) => {
